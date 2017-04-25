@@ -81,6 +81,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\CursorController.cs" />
+    <Compile Include="Assets\GuiButtonController.cs" />
     <Compile Include="Assets\LookAtTransform.cs" />
     <Compile Include="Assets\Supercyan Character Pack Free Sample\Scripts\CameraLogic.cs" />
     <Compile Include="Assets\Supercyan Character Pack Free Sample\Scripts\Demo.cs" />
