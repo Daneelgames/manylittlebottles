@@ -81,17 +81,18 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\CursorController.cs" />
-    <Compile Include="Assets\GuiButtonController.cs" />
-    <Compile Include="Assets\LookAtTransform.cs" />
-    <Compile Include="Assets\Supercyan Character Pack Free Sample\Scripts\CameraLogic.cs" />
-    <Compile Include="Assets\Supercyan Character Pack Free Sample\Scripts\Demo.cs" />
-    <Compile Include="Assets\Supercyan Character Pack Free Sample\Scripts\SimpleCharacterControl.cs" />
+    <Compile Include="Assets\Scripts\BottleController.cs" />
+    <Compile Include="Assets\Scripts\CursorController.cs" />
+    <Compile Include="Assets\Scripts\GameManager.cs" />
+    <Compile Include="Assets\Scripts\GuiButtonController.cs" />
+    <Compile Include="Assets\Scripts\JournalController.cs" />
+    <Compile Include="Assets\Scripts\LookAtTransform.cs" />
+    <Compile Include="Assets\Scripts\PlayerShipController.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\BrokenVector\LowPolyShaders\README.txt" />
-    <None Include="Assets\BrokenVector\LowPolyShaders\Shaders\LowPolyPBRShader.shader" />
-    <None Include="Assets\BrokenVector\LowPolyShaders\Shaders\LowPolyUnlitShader.shader" />
+    <None Include="Assets\Standard Assets\BrokenVector\LowPolyShaders\README.txt" />
+    <None Include="Assets\Standard Assets\BrokenVector\LowPolyShaders\Shaders\LowPolyPBRShader.shader" />
+    <None Include="Assets\Standard Assets\BrokenVector\LowPolyShaders\Shaders\LowPolyUnlitShader.shader" />
     <None Include="Assets\Standard Assets\Effects\GlassRefraction\Shaders\GlassStainedBumpDistort.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\BlendModesOverlay.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\BlurEffectConeTaps.shader" />

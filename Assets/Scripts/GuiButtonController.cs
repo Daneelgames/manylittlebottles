@@ -15,19 +15,27 @@ public JournalController journalController;
         {
             switch (name)
             {
-                case "JournalBody":
+                case "JournalBody": // open journal
                     journalController.anim.SetBool("Active", true);
                     StartCoroutine(SetButtonEnabled(journalController.buttonCloseJournal, 0.5f));
                     StartCoroutine(SetButtonEnabled(journalController.buttonTransfer, 0.5f));
                     canBePressed = false;
                 break;
 
-                case "CloseJournal":
+                case "CloseJournal": // close journal
                     journalController.anim.SetBool("Active", false);
                     StartCoroutine(SetButtonEnabled(journalController.buttonJournalBody, 0.5f));
                     canBePressed = false;
                     journalController.buttonTransfer.canBePressed = false;
                 break;
+
+                case "Transfer": // go in and out the ship
+                    journalController.anim.SetBool("Active", false);
+                    StartCoroutine(SetButtonEnabled(journalController.buttonJournalBody, 0.5f));
+                    canBePressed = false;
+                    journalController.buttonCloseJournal.canBePressed = false;
+                    GameManager.instance.StartCoroutine("Teleport");
+                    break;
             }
         }
     }

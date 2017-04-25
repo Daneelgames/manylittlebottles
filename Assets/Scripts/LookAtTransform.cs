@@ -7,7 +7,9 @@ public class LookAtTransform : MonoBehaviour {
     public Transform target;
 
 	// Update is called once per frame
-	void FixedUpdate () {
-        transform.LookAt(target);
+	void Update ()
+    {
+        Vector3 tempTarget = Vector3.Lerp(transform.position, target.position, 0.1f);
+        transform.LookAt(tempTarget);
 	}
 }
