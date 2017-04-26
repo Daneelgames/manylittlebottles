@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour {
     public IEnumerator Teleport()
     {
         // special effects here
+        playerShipController.parkingBottle.ShowParticles(true);
         yield return new WaitForSecondsRealtime(0.5f);
         // and here
         switch (control)
@@ -44,5 +45,6 @@ public class GameManager : MonoBehaviour {
                 control = Control.Player;
                 break;
         }
+        playerShipController.parkingBottle.ShowParticles(false);
     }
 }

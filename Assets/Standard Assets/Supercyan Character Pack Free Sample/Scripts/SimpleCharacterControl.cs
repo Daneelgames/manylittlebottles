@@ -3,19 +3,12 @@ using System.Collections.Generic;
 
 public class SimpleCharacterControl : MonoBehaviour {
 
-    private enum ControlMode
-    {
-        Tank,
-        Direct
-    }
+    [SerializeField] private float moveSpeed = 2;
+    [SerializeField] private float turnSpeed = 200;
+    private float m_jumpForce = 0.2f;
+    [SerializeField] private Animator anim;
+    [SerializeField] private Rigidbody rb;
 
-    [SerializeField] private float m_moveSpeed = 2;
-    [SerializeField] private float m_turnSpeed = 200;
-    [SerializeField] private float m_jumpForce = 4;
-    [SerializeField] private Animator m_animator;
-    [SerializeField] private Rigidbody m_rigidBody;
-
-    [SerializeField] private ControlMode m_controlMode = ControlMode.Direct;
 
     private float m_currentV = 0;
     private float m_currentH = 0;
@@ -33,6 +26,7 @@ public class SimpleCharacterControl : MonoBehaviour {
 
     private bool m_isGrounded;
     private List<Collider> m_collisions = new List<Collider>();
+    bool jumpCooldownOver;
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -88,53 +82,46 @@ public class SimpleCharacterControl : MonoBehaviour {
     }
 
 	void Update () {
-        m_animator.SetBool("Grounded", m_isGrounded);
+        anim.SetBool("Grounded", m_isGrounded);
 
-        switch(m_controlMode)
-        {
-            case ControlMode.Direct:
-                DirectUpdate();
-                break;
-
-            case ControlMode.Tank:
-                TankUpdate();
-                break;
-
-            default:
-                Debug.LogError("Unsupported state");
-                break;
-        }
+        DirectUpdate();
 
         m_wasGrounded = m_isGrounded;
     }
 
-    private void TankUpdate()
+    private void DirectUpdate()
     {
+        /*
         float v = Input.GetAxis("Vertical");
         float h = Input.GetAxis("Horizontal");
 
-        bool walk = Input.GetKey(KeyCode.LeftShift);
+        Transform camera = Camera.main.transform;
 
-        if (v < 0) {
-            if (walk) { v *= m_backwardsWalkScale; }
-            else { v *= m_backwardRunScale; }
-        } else if(walk)
+        if (Input.GetKey(KeyCode.LeftShift))
         {
             v *= m_walkScale;
+            h *= m_walkScale;
         }
 
         m_currentV = Mathf.Lerp(m_currentV, v, Time.deltaTime * m_interpolation);
         m_currentH = Mathf.Lerp(m_currentH, h, Time.deltaTime * m_interpolation);
 
-        transform.position += transform.forward * m_currentV * m_moveSpeed * Time.deltaTime;
-        transform.Rotate(0, m_currentH * m_turnSpeed * Time.deltaTime, 0);
-
-        m_animator.SetFloat("MoveSpeed", m_currentV);
-
+        Vector3 direction = camera.forward * m_currentV + camera.right * m_currentH;
+        float directionLength = direction.magnitude;
+        direction.y = 0;
+        direction = direction.normalized * directionLength;
+        if(direction != Vector3.zero)
+        {
+            m_currentDirection = Vector3.Slerp(m_currentDirection, direction, Time.deltaTime * m_interpolation);
+            transform.rotation = Quaternion.LookRotation(m_currentDirection);
+            transform.position += m_currentDirection * m_moveSpeed * Time.deltaTime;
+            m_animator.SetFloat("MoveSpeed", direction.magnitude);
+        }
         JumpingAndLanding();
+        */
     }
 
-    private void DirectUpdate()
+    void FixedUpdate()
     {
         float v = Input.GetAxis("Vertical");
         float h = Input.GetAxis("Horizontal");
@@ -151,27 +138,28 @@ public class SimpleCharacterControl : MonoBehaviour {
         m_currentH = Mathf.Lerp(m_currentH, h, Time.deltaTime * m_interpolation);
 
         Vector3 direction = camera.forward * m_currentV + camera.right * m_currentH;
-
         float directionLength = direction.magnitude;
         direction.y = 0;
         direction = direction.normalized * directionLength;
-
-        if(direction != Vector3.zero)
+        if (direction != Vector3.zero)
         {
             m_currentDirection = Vector3.Slerp(m_currentDirection, direction, Time.deltaTime * m_interpolation);
-
             transform.rotation = Quaternion.LookRotation(m_currentDirection);
-            transform.position += m_currentDirection * m_moveSpeed * Time.deltaTime;
-
-            m_animator.SetFloat("MoveSpeed", direction.magnitude);
+            if (m_isGrounded)
+                rb.velocity = m_currentDirection * moveSpeed * Time.deltaTime;
+            anim.SetFloat("MoveSpeed", direction.magnitude);
         }
-
-        JumpingAndLanding();
+        else if (m_isGrounded)
+        {
+            rb.velocity = Vector3.zero;
+        }
+        //JumpingAndLanding();
     }
 
+    /*
     private void JumpingAndLanding()
     {
-        bool jumpCooldownOver = (Time.time - m_jumpTimeStamp) >= m_minJumpInterval;
+         jumpCooldownOver = (Time.time - m_jumpTimeStamp) >= m_minJumpInterval;
 
         if (jumpCooldownOver && m_isGrounded && Input.GetKeyDown(KeyCode.Space))
         {
@@ -188,5 +176,5 @@ public class SimpleCharacterControl : MonoBehaviour {
         {
             m_animator.SetTrigger("Jump");
         }
-    }
+    }*/
 }
