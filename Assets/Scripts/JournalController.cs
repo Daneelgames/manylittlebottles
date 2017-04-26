@@ -9,4 +9,9 @@ public class JournalController : MonoBehaviour {
 	public GuiButtonController buttonCloseJournal;
 
 	public Animator anim;
+
+    public void EnableJournal()
+    {
+        anim.SetBool("Enabled", true);
+    }
 }

@@ -6,6 +6,8 @@ public class BottleController : MonoBehaviour {
 
     public Transform teleportPosition;
     public ParticleSystem teleportParticles;
+    public Transform bottleParent;
+    public GameObject cameraFocus;
 
     ParticleSystem.EmissionModule teleportParticlesEmission;
 
