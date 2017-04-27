@@ -7,11 +7,12 @@ public class CameraMovementController : MonoBehaviour {
     public Vector3 posOffset;
     GameObject target;
     public float rotateSpeed = 5f;
-    
+    float mouseX = 0;
+
     void Start()
     {
         target = GameManager.instance.playerShipController.parkingBottle.cameraFocus;
-    }
+    }                                                                                                                           
 
     public void UpdateTarget(GameObject trgt)
     {
@@ -35,15 +36,27 @@ public class CameraMovementController : MonoBehaviour {
             }
 
             // horizontal
-            float horizontal = Input.GetAxis("Mouse X") * rotateSpeed;
+            mouseX = Input.GetAxis("Mouse X");
+            if (mouseX > 0.5f)
+            {
+                mouseX = 0.5f;
+            }
+            else if (mouseX < -0.5f)
+            {
+                mouseX = -0.5f;
+            }
+            float horizontal = mouseX * rotateSpeed;
             target.transform.Rotate(0, horizontal, 0);
 
-            float desiredAngleY = target.transform.eulerAngles.y;
-            float desiredAngleX = target.transform.eulerAngles.x;
-            Quaternion rotation = Quaternion.Euler(0, desiredAngleY, 0);
-            transform.position = target.transform.position - (rotation * posOffset);
-
-            transform.LookAt(target.transform);
+            //transform.LookAt(target.transform);
         }
+        float desiredAngleY = target.transform.eulerAngles.y;
+        float desiredAngleX = target.transform.eulerAngles.x;
+        Quaternion rotation = Quaternion.Euler(0, desiredAngleY, 0);
+        transform.position = Vector3.Lerp(transform.position, target.transform.position - (rotation * posOffset), 7 * Time.deltaTime);
+
+        var targetRotation = Quaternion.LookRotation(target.transform.position - transform.position);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 7 * Time.deltaTime);
+
     }
 }

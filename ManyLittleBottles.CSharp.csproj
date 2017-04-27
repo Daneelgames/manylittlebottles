@@ -81,18 +81,29 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\CabinController.cs" />
     <Compile Include="Assets\RotateToCamera.cs" />
     <Compile Include="Assets\Scripts\BottleController.cs" />
     <Compile Include="Assets\Scripts\CameraMovementController.cs" />
     <Compile Include="Assets\Scripts\CursorController.cs" />
+    <Compile Include="Assets\Scripts\EffectBase.cs" />
+    <Compile Include="Assets\Scripts\Extensions.cs" />
+    <Compile Include="Assets\Scripts\FrustumJitter.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\GuiButtonController.cs" />
     <Compile Include="Assets\Scripts\InteractiveObject.cs" />
     <Compile Include="Assets\Scripts\JournalController.cs" />
     <Compile Include="Assets\Scripts\PlayerShipController.cs" />
     <Compile Include="Assets\Scripts\SimpleCharacterControl.cs" />
+    <Compile Include="Assets\Scripts\TemporalReprojection.cs" />
+    <Compile Include="Assets\Scripts\VelocityBuffer.cs" />
+    <Compile Include="Assets\Scripts\VelocityBufferTag.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Shaders\IncDepth.cginc" />
+    <None Include="Assets\Shaders\IncNoise.cginc" />
+    <None Include="Assets\Shaders\TemporalReprojection.shader" />
+    <None Include="Assets\Shaders\VelocityBuffer.shader" />
     <None Include="Assets\Standard Assets\BrokenVector\LowPolyShaders\README.txt" />
     <None Include="Assets\Standard Assets\BrokenVector\LowPolyShaders\Shaders\LowPolyPBRShader.shader" />
     <None Include="Assets\Standard Assets\BrokenVector\LowPolyShaders\Shaders\LowPolyUnlitShader.shader" />

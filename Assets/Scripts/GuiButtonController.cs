@@ -8,10 +8,16 @@ public JournalController journalController;
 
     public bool canBePressed = true;
     public bool selected = false;
+    public Animator anim;
+
+    float cooldown = 0.5f;
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && canBePressed && selected)
+        if (cooldown > 0)
+            cooldown -= Time.deltaTime;
+
+        if (Input.GetMouseButtonDown(0) && canBePressed && selected && cooldown <= 0f)
         {
             switch (name)
             {
@@ -36,7 +42,14 @@ public JournalController journalController;
                     journalController.buttonCloseJournal.canBePressed = false;
                     GameManager.instance.StartCoroutine("Teleport");
                     break;
+
+                case "TakeOff": // fly up, destroy bottle
+                    GameManager.instance.playerShipController.StartCoroutine("TakeOff");
+                    break;
             }
+            if (anim)
+                anim.SetTrigger("Press");
+            cooldown = 0.5f;
         }
     }
 

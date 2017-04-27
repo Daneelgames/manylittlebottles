@@ -140,6 +140,10 @@
     <Compile Include="Assets\Editor\ImageEffects\VignetteAndChromaticAberrationEditor.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Shaders\IncDepth.cginc" />
+    <None Include="Assets\Shaders\IncNoise.cginc" />
+    <None Include="Assets\Shaders\TemporalReprojection.shader" />
+    <None Include="Assets\Shaders\VelocityBuffer.shader" />
     <None Include="Assets\Standard Assets\BrokenVector\LowPolyShaders\README.txt" />
     <None Include="Assets\Standard Assets\BrokenVector\LowPolyShaders\Shaders\LowPolyPBRShader.shader" />
     <None Include="Assets\Standard Assets\BrokenVector\LowPolyShaders\Shaders\LowPolyUnlitShader.shader" />

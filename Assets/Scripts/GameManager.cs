@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour {
+public class GameManager : MonoBehaviour
+{
     public static GameManager instance = null;
 
     public bool haveJournal = false;
@@ -13,6 +14,7 @@ public class GameManager : MonoBehaviour {
     public SimpleCharacterControl playerController;
     public PlayerShipController playerShipController;
     public JournalController journalController;
+    public CabinController cabinController;
 
     public List<InteractiveObject> objectsToInteract;
     public CameraMovementController cameraMovementController;
@@ -48,6 +50,7 @@ public class GameManager : MonoBehaviour {
                 playerController.gameObject.transform.localPosition = Vector3.zero;
                 control = Control.Ship;
                 cameraMovementController.UpdateTarget(playerShipController.cameraFocus);
+                cabinController.ShowCabin(true);
                 break;
 
             case Control.Ship: // go to bottle
@@ -57,6 +60,7 @@ public class GameManager : MonoBehaviour {
                 playerController.gameObject.SetActive(true);
                 control = Control.Player;
                 cameraMovementController.UpdateTarget(playerShipController.parkingBottle.cameraFocus);
+                cabinController.ShowCabin(false);
                 break;
         }
         playerShipController.parkingBottle.ShowParticles(false);

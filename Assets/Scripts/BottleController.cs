@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BottleController : MonoBehaviour {
-
+public class BottleController : MonoBehaviour
+{
     public Transform teleportPosition;
     public ParticleSystem teleportParticles;
     public Transform bottleParent;
     public GameObject cameraFocus;
+    public Animator anim;
+    public GameObject explosionParticles;
 
     ParticleSystem.EmissionModule teleportParticlesEmission;
 
@@ -37,5 +39,15 @@ public class BottleController : MonoBehaviour {
         {
             teleportParticlesEmission.rateOverTime = 0;
         }
+    }
+
+    public IEnumerator Explode()
+    {
+        anim.SetTrigger("Explode");
+        yield return new WaitForSeconds(2f);
+        /// explode, ship flyes away
+        yield return new WaitForSeconds(0.25f);
+        Instantiate(explosionParticles, transform.position, transform.rotation);
+        gameObject.SetActive(false);
     }
 }
