@@ -6,16 +6,29 @@ public class BottleController : MonoBehaviour
 {
     public Transform teleportPosition;
     public ParticleSystem teleportParticles;
-    public Transform bottleParent;
     public GameObject cameraFocus;
     public Animator anim;
     public GameObject explosionParticles;
+    public bool destroying = false;
+
+    public GameObject bottleInterior;
 
     ParticleSystem.EmissionModule teleportParticlesEmission;
 
     void Start()
     {
+        GameManager.instance.bottlesList.AddBottle(this);
         teleportParticlesEmission = teleportParticles.emission;
+        if (GameManager.instance.playerShipController.parkingBottle != this)
+            bottleInterior.SetActive(false);
+    }
+
+    void OnTriggerEnter(Collider coll)
+    {
+        if (coll.gameObject.name == "PlayerShip")
+        {
+            bottleInterior.SetActive(true);
+        }
     }
 
     public void ShowParticles(bool active)
@@ -43,11 +56,11 @@ public class BottleController : MonoBehaviour
 
     public IEnumerator Explode()
     {
+        destroying = true;
         anim.SetTrigger("Explode");
         yield return new WaitForSeconds(2f);
-        /// explode, ship flyes away
-        yield return new WaitForSeconds(0.25f);
         Instantiate(explosionParticles, transform.position, transform.rotation);
+        yield return new WaitForSeconds(0.25f);
         gameObject.SetActive(false);
     }
 }

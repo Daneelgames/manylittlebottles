@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
 
     public List<InteractiveObject> objectsToInteract;
     public CameraMovementController cameraMovementController;
+    public BottlesList bottlesList;
 
     void Awake()
     {
@@ -34,6 +35,15 @@ public class GameManager : MonoBehaviour
     {
         if (haveJournal)
             journalController.EnableJournal();
+
+        StartPositions();
+    }
+    void StartPositions()
+    {
+        playerController.transform.parent = playerShipController.parkingBottle.bottleInterior.transform;
+        playerController.transform.position = playerShipController.parkingBottle.teleportPosition.position;
+        playerShipController.transform.parent = playerShipController.parkingBottle.bottleInterior.transform;
+
     }
 
     public IEnumerator Teleport()
@@ -54,7 +64,7 @@ public class GameManager : MonoBehaviour
                 break;
 
             case Control.Ship: // go to bottle
-                playerController.gameObject.transform.SetParent(playerShipController.parkingBottle.bottleParent.transform);
+                playerController.gameObject.transform.SetParent(playerShipController.parkingBottle.bottleInterior.transform);
                 playerController.gameObject.transform.position = playerShipController.parkingBottle.teleportPosition.position;
                 playerController.gameObject.transform.rotation = playerShipController.parkingBottle.teleportPosition.rotation;
                 playerController.gameObject.SetActive(true);

@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraMovementController : MonoBehaviour {
+public class CameraMovementController : MonoBehaviour
+{
 
     public Vector3 posOffset;
     GameObject target;
@@ -12,11 +13,20 @@ public class CameraMovementController : MonoBehaviour {
     void Start()
     {
         target = GameManager.instance.playerShipController.parkingBottle.cameraFocus;
-    }                                                                                                                           
+    }
 
     public void UpdateTarget(GameObject trgt)
     {
         target = trgt;
+        switch (GameManager.instance.control)
+        {
+            case GameManager.Control.Player:
+                posOffset = new Vector3(1, posOffset.y, 1);
+                break;
+            case GameManager.Control.Ship:
+                posOffset = new Vector3(1.5f, posOffset.y, 1.5f);
+                break;
+        }
     }
 
     void LateUpdate()
@@ -25,7 +35,7 @@ public class CameraMovementController : MonoBehaviour {
         if (Input.GetMouseButton(1))
         {
             // vertical
-            posOffset = new Vector3(posOffset.x, posOffset.y + Input.GetAxis("Mouse Y") * 0.25f, posOffset.z); 
+            posOffset = new Vector3(posOffset.x, posOffset.y + Input.GetAxis("Mouse Y") * 0.25f, posOffset.z);
             if (posOffset.y > 1)
             {
                 posOffset.y = 1;
@@ -57,6 +67,5 @@ public class CameraMovementController : MonoBehaviour {
 
         var targetRotation = Quaternion.LookRotation(target.transform.position - transform.position);
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 7 * Time.deltaTime);
-
     }
 }

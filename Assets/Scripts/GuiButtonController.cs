@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GuiButtonController : MonoBehaviour {
+public class GuiButtonController : MonoBehaviour
+{
 
-public JournalController journalController;
+    public JournalController journalController;
+    public MapController mapController;
 
     public bool canBePressed = true;
     public bool selected = false;
@@ -26,25 +28,44 @@ public JournalController journalController;
                     StartCoroutine(SetButtonEnabled(journalController.buttonCloseJournal, 0.5f));
                     StartCoroutine(SetButtonEnabled(journalController.buttonTransfer, 0.5f));
                     canBePressed = false;
-                break;
+                    break;
 
                 case "CloseJournal": // close journal
                     journalController.anim.SetBool("Active", false);
                     StartCoroutine(SetButtonEnabled(journalController.buttonJournalBody, 0.5f));
                     canBePressed = false;
                     journalController.buttonTransfer.canBePressed = false;
-                break;
+                    break;
 
                 case "Transfer": // go in and out the ship
-                    journalController.anim.SetBool("Active", false);
-                    StartCoroutine(SetButtonEnabled(journalController.buttonJournalBody, 0.5f));
-                    canBePressed = false;
-                    journalController.buttonCloseJournal.canBePressed = false;
-                    GameManager.instance.StartCoroutine("Teleport");
+                    bool canTransfer = true;
+
+                    if (GameManager.instance.playerShipController.parkingBottle && GameManager.instance.playerShipController.parkingBottle.destroying)
+                    {
+                        canTransfer = false;
+                    }
+                    else if (GameManager.instance.control == GameManager.Control.Ship && !GameManager.instance.playerShipController.parkingBottle)
+                    {
+                        canTransfer = false;
+                    }
+
+                    if (canTransfer)
+                    {
+                        journalController.anim.SetBool("Active", false);
+                        StartCoroutine(SetButtonEnabled(journalController.buttonJournalBody, 0.5f));
+                        canBePressed = false;
+                        journalController.buttonCloseJournal.canBePressed = false;
+                        GameManager.instance.StartCoroutine("Teleport");
+                    }
                     break;
 
                 case "TakeOff": // fly up, destroy bottle
-                    GameManager.instance.playerShipController.StartCoroutine("TakeOff");
+                    if (GameManager.instance.playerShipController.parkingBottle && !GameManager.instance.playerShipController.parkingBottle.destroying)
+                        GameManager.instance.playerShipController.StartCoroutine("TakeOff");
+                    break;
+
+                case "Map":
+                    mapController.ToggleMap();
                     break;
             }
             if (anim)
@@ -53,9 +74,9 @@ public JournalController journalController;
         }
     }
 
-    IEnumerator SetButtonEnabled (GuiButtonController button, float t)
+    IEnumerator SetButtonEnabled(GuiButtonController button, float t)
     {
-        yield return new WaitForSeconds (t);
+        yield return new WaitForSeconds(t);
         button.canBePressed = true;
     }
 
@@ -76,11 +97,11 @@ public JournalController journalController;
     void OnMouseExit()
     {
         selected = false;
-        
+
         switch (name)
         {
             case "JournalBody":
-            journalController.anim.SetBool("Selected", false);
+                journalController.anim.SetBool("Selected", false);
                 break;
         }
     }
