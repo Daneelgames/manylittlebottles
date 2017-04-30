@@ -25,6 +25,7 @@ public class BottleController : MonoBehaviour
 
     void OnTriggerEnter(Collider coll)
     {
+        print (coll.gameObject.name);
         if (coll.gameObject.name == "PlayerShip")
         {
             bottleInterior.SetActive(true);

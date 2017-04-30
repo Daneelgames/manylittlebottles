@@ -73,4 +73,8 @@ public class PlayerShipController : MonoBehaviour
             yield return null;
         }
     }
+    public void TiltShip(Vector2 joystickVelocity)
+    {
+        
+    }
 }

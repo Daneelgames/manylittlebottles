@@ -46,8 +46,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\BottlesList.cs" />
-     <Compile Include="Assets\MapController.cs" />
      <Compile Include="Assets\PostProcessing\Runtime\Attributes\GetSetAttribute.cs" />
      <Compile Include="Assets\PostProcessing\Runtime\Attributes\MinAttribute.cs" />
      <Compile Include="Assets\PostProcessing\Runtime\Attributes\TrackballAttribute.cs" />
@@ -94,24 +92,19 @@
      <Compile Include="Assets\PostProcessing\Runtime\Utils\RenderTextureFactory.cs" />
      <Compile Include="Assets\PostProcessing\Utilities\CustomMotionTexture\ExampleWheelController.cs" />
      <Compile Include="Assets\Scripts\BottleController.cs" />
+     <Compile Include="Assets\Scripts\BottlesList.cs" />
      <Compile Include="Assets\Scripts\CabinController.cs" />
      <Compile Include="Assets\Scripts\CameraMovementController.cs" />
      <Compile Include="Assets\Scripts\CursorController.cs" />
      <Compile Include="Assets\Scripts\DestroyOnTime.cs" />
-     <Compile Include="Assets\Scripts\EffectBase.cs" />
-     <Compile Include="Assets\Scripts\Extensions.cs" />
-     <Compile Include="Assets\Scripts\FrustumJitter.cs" />
      <Compile Include="Assets\Scripts\GameManager.cs" />
      <Compile Include="Assets\Scripts\GuiButtonController.cs" />
      <Compile Include="Assets\Scripts\InteractiveObject.cs" />
      <Compile Include="Assets\Scripts\JournalController.cs" />
      <Compile Include="Assets\Scripts\PlayerShipController.cs" />
      <Compile Include="Assets\Scripts\RotateToCamera.cs" />
+     <Compile Include="Assets\Scripts\ShipCameraFocusController.cs" />
      <Compile Include="Assets\Scripts\SimpleCharacterControl.cs" />
-     <Compile Include="Assets\Scripts\TemporalReprojection.cs" />
-     <Compile Include="Assets\Scripts\VelocityBuffer.cs" />
-     <Compile Include="Assets\Scripts\VelocityBufferTag.cs" />
-     <Compile Include="Assets\ShipCameraFocusController.cs" />
      <None Include="Assets\PostProcessing\Resources\Shaders\DepthOfField.shader" />
      <None Include="Assets\Standard Assets\Effects\GlassRefraction\Shaders\GlassStainedBumpDistort.shader" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\BlendOneOne.shader" />
@@ -237,9 +230,6 @@
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_Antialiasing\FXAAPreset2.shader" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\BlurAndFlares.shader" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\BlendForBloom.shader" />
- <Reference Include="UnityEngine.Advertisements">
- <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Advertisements/UnityEngine.Advertisements.dll</HintPath>
- </Reference>
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
@@ -254,9 +244,6 @@
  </Reference>
  <Reference Include="UnityEngine.HoloLens">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityHoloLens/RuntimeEditor/UnityEngine.HoloLens.dll</HintPath>
- </Reference>
- <Reference Include="UnityEngine.Purchasing">
- <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityPurchasing/UnityEngine.Purchasing.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.VR">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityVR/RuntimeEditor/UnityEngine.VR.dll</HintPath>

@@ -6,7 +6,6 @@ public class GuiButtonController : MonoBehaviour
 {
 
     public JournalController journalController;
-    public MapController mapController;
 
     public bool canBePressed = true;
     public bool selected = false;
@@ -64,14 +63,75 @@ public class GuiButtonController : MonoBehaviour
                         GameManager.instance.playerShipController.StartCoroutine("TakeOff");
                     break;
 
-                case "Map":
-                    mapController.ToggleMap();
+                case "Joystick":
+                    StartCoroutine("JoystickControl");
                     break;
             }
             if (anim)
                 anim.SetTrigger("Press");
             cooldown = 0.5f;
         }
+    }
+
+    IEnumerator JoystickControl()
+    {
+        Vector3 mouseInitPos = Input.mousePosition;
+        mouseInitPos.z = 10f;
+        Vector3 temp = Camera.main.ScreenToWorldPoint(mouseInitPos);
+        mouseInitPos = temp;
+
+        while (Input.GetMouseButton(0))
+        {
+            Vector3 mouseOffset = Input.mousePosition;
+            mouseOffset.z = 10f;
+            Vector3 offsetTemp = Camera.main.ScreenToWorldPoint(mouseOffset);
+            mouseOffset = offsetTemp;
+
+            Vector2 joustickVelocity = Vector2.zero;
+            if (mouseOffset.x < mouseInitPos.x)
+            {
+                float offset = Mathf.Abs(Mathf.Abs(mouseInitPos.x) - Mathf.Abs(mouseOffset.x));
+                if (offset <= 1) joustickVelocity.x = offset * -1;
+                else joustickVelocity.x = -1;
+            }
+            else if (mouseOffset.x > mouseInitPos.x)
+            {
+                float offset = Mathf.Abs(mouseOffset.x) - Mathf.Abs(Mathf.Abs(mouseInitPos.x));
+                if (offset <= 1) joustickVelocity.x = offset;
+                else joustickVelocity.x = 1;
+            }
+            if (mouseOffset.y < mouseInitPos.y)
+            {
+                float offset = Mathf.Abs(Mathf.Abs(mouseInitPos.y) - Mathf.Abs(mouseOffset.y)) * 2;
+                if (offset <= 1) joustickVelocity.y = offset * -1;
+                else joustickVelocity.y = -1;
+            }
+            else if (mouseOffset.y > mouseInitPos.y)
+            {
+                float offset = Mathf.Abs(Mathf.Abs(mouseOffset.y) - Mathf.Abs(mouseInitPos.y)) * 2;
+                if (offset <= 1) joustickVelocity.y = offset;
+                else joustickVelocity.y = 1;
+            }
+            TiltJoystick(joustickVelocity);
+            if (!GameManager.instance.playerShipController.parkingBottle)
+                GameManager.instance.playerShipController.TiltShip(joustickVelocity);
+            print(joustickVelocity);
+            yield return null;
+        }
+    }
+
+    void TiltJoystick(Vector2 joystickVelocity)
+    {
+        // if (x == 1) rotationZ = -35
+        // if (y == 1) rotationX = 35
+        Quaternion newRotation = transform.rotation;
+        //        Vector3 targetRotation =  new Vector3(35 / joystickVelocity.y, 0, 35/joystickVelocity.x);
+        Quaternion targetRotation = transform.rotation;
+        float z = 35 * joystickVelocity.x;
+        float x = 35 * joystickVelocity.y;
+        targetRotation.eulerAngles = new Vector3(z, 0, x);
+        //newRotation.eulerAngles = Vector3.Lerp(newRotation.eulerAngles, targetRotation, 0.8f);
+        transform.rotation = targetRotation;
     }
 
     IEnumerator SetButtonEnabled(GuiButtonController button, float t)
