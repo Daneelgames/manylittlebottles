@@ -115,23 +115,39 @@ public class GuiButtonController : MonoBehaviour
             TiltJoystick(joustickVelocity);
             if (!GameManager.instance.playerShipController.parkingBottle)
                 GameManager.instance.playerShipController.TiltShip(joustickVelocity);
-            print(joustickVelocity);
+            //            print(joustickVelocity);
             yield return null;
         }
+        StartCoroutine("ReturnJoystick");
     }
 
     void TiltJoystick(Vector2 joystickVelocity)
     {
         // if (x == 1) rotationZ = -35
         // if (y == 1) rotationX = 35
-        Quaternion newRotation = transform.rotation;
         //        Vector3 targetRotation =  new Vector3(35 / joystickVelocity.y, 0, 35/joystickVelocity.x);
         Quaternion targetRotation = transform.rotation;
-        float z = 35 * joystickVelocity.x;
         float x = 35 * joystickVelocity.y;
-        targetRotation.eulerAngles = new Vector3(z, 0, x);
-        //newRotation.eulerAngles = Vector3.Lerp(newRotation.eulerAngles, targetRotation, 0.8f);
-        transform.rotation = targetRotation;
+        float z = 35 * joystickVelocity.x;
+        targetRotation.eulerAngles = new Vector3(x, 0, z * -1);
+        float newX = Mathf.Lerp(transform.localEulerAngles.x, targetRotation.eulerAngles.x, 0.9f);
+        float newZ = Mathf.Lerp(transform.localEulerAngles.z, targetRotation.eulerAngles.z, 0.9f);
+        //transform.localEulerAngles = new Vector3(newX, 0, newZ);
+        transform.localEulerAngles = targetRotation.eulerAngles;
+        //print (targetRotation.eulerAngles);
+    }
+
+    IEnumerator ReturnJoystick()
+    {         
+        float timer = 0f;
+        Quaternion startRot = transform.rotation;
+        while (timer <= 1f)
+        {
+            timer += Time.deltaTime * 20;
+            transform.rotation = Quaternion.Lerp(startRot, Quaternion.identity, timer);
+            transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, 0, transform.localEulerAngles.z);
+            yield return new WaitForEndOfFrame();
+        }
     }
 
     IEnumerator SetButtonEnabled(GuiButtonController button, float t)
