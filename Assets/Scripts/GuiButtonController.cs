@@ -76,45 +76,49 @@ public class GuiButtonController : MonoBehaviour
     IEnumerator JoystickControl()
     {
         Vector3 mouseInitPos = Input.mousePosition;
-        mouseInitPos.z = 10f;
-        Vector3 temp = Camera.main.ScreenToWorldPoint(mouseInitPos);
-        mouseInitPos = temp;
+        //mouseInitPos.z = 10f;
+        //Vector3 temp = Camera.main.ScreenToWorldPoint(mouseInitPos);
+        //mouseInitPos = temp;
 
         while (Input.GetMouseButton(0))
         {
             Vector3 mouseOffset = Input.mousePosition;
-            mouseOffset.z = 10f;
-            Vector3 offsetTemp = Camera.main.ScreenToWorldPoint(mouseOffset);
-            mouseOffset = offsetTemp;
+            //mouseOffset.z = 10f;
+            //Vector3 offsetTemp = Camera.main.ScreenToWorldPoint(mouseOffset);
+            //mouseOffset = offsetTemp;
 
             Vector2 joustickVelocity = Vector2.zero;
+
+            float maxOffsetX = Screen.width / 10;
+            float maxOffsetY = Screen.height / 10;
+
             if (mouseOffset.x < mouseInitPos.x)
             {
                 float offset = Mathf.Abs(Mathf.Abs(mouseInitPos.x) - Mathf.Abs(mouseOffset.x));
-                if (offset <= 1) joustickVelocity.x = offset * -1;
+                if (offset <= maxOffsetX) joustickVelocity.x = (offset / maxOffsetX) * -1;
                 else joustickVelocity.x = -1;
             }
             else if (mouseOffset.x > mouseInitPos.x)
             {
                 float offset = Mathf.Abs(mouseOffset.x) - Mathf.Abs(Mathf.Abs(mouseInitPos.x));
-                if (offset <= 1) joustickVelocity.x = offset;
+                if (offset <= maxOffsetX) joustickVelocity.x = offset / maxOffsetX;
                 else joustickVelocity.x = 1;
             }
             if (mouseOffset.y < mouseInitPos.y)
             {
-                float offset = Mathf.Abs(Mathf.Abs(mouseInitPos.y) - Mathf.Abs(mouseOffset.y)) * 2;
-                if (offset <= 1) joustickVelocity.y = offset * -1;
+                float offset = Mathf.Abs(Mathf.Abs(mouseInitPos.y) - Mathf.Abs(mouseOffset.y));
+                if (offset <= maxOffsetY) joustickVelocity.y = (offset / maxOffsetY) * -1;
                 else joustickVelocity.y = -1;
             }
             else if (mouseOffset.y > mouseInitPos.y)
             {
-                float offset = Mathf.Abs(Mathf.Abs(mouseOffset.y) - Mathf.Abs(mouseInitPos.y)) * 2;
-                if (offset <= 1) joustickVelocity.y = offset;
+                float offset = Mathf.Abs(Mathf.Abs(mouseOffset.y) - Mathf.Abs(mouseInitPos.y));
+                if (offset <= maxOffsetY) joustickVelocity.y = offset / maxOffsetY;
                 else joustickVelocity.y = 1;
             }
             TiltJoystick(joustickVelocity);
             if (!GameManager.instance.playerShipController.parkingBottle)
-                GameManager.instance.playerShipController.TiltShip(joustickVelocity);
+                GameManager.instance.playerShipController.Maneuvering(joustickVelocity);
             //            print(joustickVelocity);
             yield return null;
         }
@@ -128,8 +132,8 @@ public class GuiButtonController : MonoBehaviour
         //        Vector3 targetRotation =  new Vector3(35 / joystickVelocity.y, 0, 35/joystickVelocity.x);
         Quaternion targetRotation = transform.rotation;
         float x = 35 * joystickVelocity.y;
-        float z = 35 * joystickVelocity.x;
-        targetRotation.eulerAngles = new Vector3(x, 0, z * -1);
+        float z = 35 * joystickVelocity.x * -1;
+        targetRotation.eulerAngles = new Vector3(x, 0, z);
         float newX = Mathf.Lerp(transform.localEulerAngles.x, targetRotation.eulerAngles.x, 0.9f);
         float newZ = Mathf.Lerp(transform.localEulerAngles.z, targetRotation.eulerAngles.z, 0.9f);
         //transform.localEulerAngles = new Vector3(newX, 0, newZ);
@@ -138,13 +142,13 @@ public class GuiButtonController : MonoBehaviour
     }
 
     IEnumerator ReturnJoystick()
-    {         
+    {
         float timer = 0f;
         Quaternion startRot = transform.rotation;
         while (timer <= 1f)
         {
             timer += Time.deltaTime * 20;
-            transform.rotation = Quaternion.Lerp(startRot, Quaternion.identity, timer);
+            transform.localRotation = Quaternion.Lerp(startRot, Quaternion.identity, timer);
             transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, 0, transform.localEulerAngles.z);
             yield return new WaitForEndOfFrame();
         }

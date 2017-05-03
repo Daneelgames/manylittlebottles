@@ -14,6 +14,8 @@ public class PlayerShipController : MonoBehaviour
     public float flySpeedIdle = 0.1f;
     float flySpeed = 5;
     ParticleSystem.EmissionModule _taleParticles;
+    public Rigidbody rb;
+    public float turnSpeed;
     void Start()
     {
         _taleParticles = taleParticles.emission;
@@ -73,8 +75,24 @@ public class PlayerShipController : MonoBehaviour
             yield return null;
         }
     }
-    public void TiltShip(Vector2 joystickVelocity)
+    public void Maneuvering(Vector2 joystickVelocity)
     {
-        
+        float newx = Mathf.Lerp(rb.angularVelocity.x, joystickVelocity.y * turnSpeed, 0.9f);
+        float newy = Mathf.Lerp(rb.angularVelocity.y, joystickVelocity.x * turnSpeed, 0.9f);
+
+        float xxx = transform.localEulerAngles.x;
+
+        if (xxx > 25 && xxx < 300 && joystickVelocity.y > 0)
+        {
+            print(xxx);
+            newx = 0;
+        }
+        else if ((xxx < 335 && xxx > 300 && joystickVelocity.y < 0))
+        {
+            print(xxx);
+            newx = 0;
+        }
+
+        rb.angularVelocity = new Vector3(0, newy, 0);
     }
 }
